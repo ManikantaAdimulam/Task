@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     flexDirection: 'row',
+    padding: 10,
   },
   title: {
     color: '#ffffff',

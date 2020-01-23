@@ -11,41 +11,55 @@ import {connect} from 'react-redux';
 import {IconWithBadge} from '../Components/IconWithBadge';
 import LinearGradient from 'react-native-linear-gradient';
 import {HeaderView} from '../Components/HeadeView';
+import {CardView} from '../Components/CardView';
+import {Cell} from '../Components/Cell';
 
 class DashBoard extends PureComponent {
   constructor(props) {
     super(props);
+    this.renderCell = this.renderCell.bind(this);
+  }
+
+  renderCell({item}) {
+    return <Cell item={item} />;
   }
 
   render() {
     console.log(this.props);
     const callIcon = require('../Assets/call.png');
     const messageIcon = require('../Assets/mail.png');
-    const {name, data} = this.props;
+    const {name, data, number, message} = this.props;
     return (
-      <View style={styles.container}>
-        <LinearGradient colors={['#8019A3', '#AC2782']} style={styles.topView}>
-          <HeaderView title={`Welcome \n ${name}`} />
+      <LinearGradient colors={['#8019A3', '#AC2782']} style={styles.container}>
+        <SafeAreaView>
+          <View style={styles.topView}>
+            <HeaderView title={`Welcome, \n ${name}`} />
+            <View style={styles.iconsView}>
+              <IconWithBadge title={'Calls'} icon={callIcon} />
+              <IconWithBadge title={'Messages'} icon={messageIcon} />
+            </View>
+          </View>
           <View
             style={{
-              flexDirection: 'row',
-              width,
-              justifyContent: 'space-around',
+              height: height * 0.5,
+              backgroundColor: '#ffffff',
+              alignItems: 'center',
             }}>
-            <IconWithBadge title={'Calls'} icon={callIcon} />
-            <IconWithBadge title={'Messages'} icon={messageIcon} />
+            <View style={{top: -height * 0.1}}>
+              <CardView number={number} message={message} />
+            </View>
+            <View style={{width}}>
+              <FlatList
+                data={data}
+                horizontal
+                pagingEnabled
+                renderItem={this.renderCell}
+                keyExtractor={(item, index) => index}
+              />
+            </View>
           </View>
-        </LinearGradient>
-        <View>
-          <FlatList
-            data={data}
-            horizontal
-            pagingEnabled
-            renderItem={({item}) => <Text>{item.title}</Text>}
-            keyExtractor={(item, index) => index}
-          />
-        </View>
-      </View>
+        </SafeAreaView>
+      </LinearGradient>
     );
   }
 }
@@ -53,6 +67,7 @@ class DashBoard extends PureComponent {
 const mapStateToProps = state => ({
   ...state.reducer,
   ...state.listReducer,
+  ...state.cardReducer,
 });
 
 export default connect(mapStateToProps)(DashBoard);
@@ -66,6 +81,12 @@ const styles = StyleSheet.create({
 
   topView: {
     height: height * 0.5,
-    justifyContent: 'space-between',
+  },
+
+  iconsView: {
+    flexDirection: 'row',
+    width,
+    justifyContent: 'space-around',
+    marginTop: height * 0.1,
   },
 });

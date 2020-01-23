@@ -12,11 +12,7 @@ export const HeaderView = ({title}) => {
     <View style={styles.header}>
       <Text style={styles.title}>{title}</Text>
       <TouchableOpacity>
-        <Image
-          source={require('../Assets/menu.png')}
-          style={styles.menuIcon}
-          resizeMode={'center'}
-        />
+        <Image source={require('../Assets/menu.png')} style={styles.menuIcon} />
       </TouchableOpacity>
     </View>
   );
@@ -34,9 +30,12 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#ffffff',
     fontSize: 20,
+    marginLeft: width * 0.1,
+    fontWeight: '600',
   },
   menuIcon: {
-    height: 64,
-    width: 64,
+    height: 30,
+    width: 40,
+    resizeMode: 'contain',
   },
 });

@@ -1,21 +1,14 @@
 ///
-const CHANGE_STATUS = "CHANGE_STATUS";
+const CHANGE_STATUS = 'CHANGE_STATUS';
 
-
-/**
- * Add new entry
- * @memberof Actions
- * @param {*} entry
- * @returns
- */
+///
 const changeStatus = isActive => {
+  console.log(`action payload: ${isActive}`);
   return {
     type: CHANGE_STATUS,
-    payload: isActive
+    payload: isActive,
   };
 };
 
 ///
-export {
-  CHANGE_STATUS
-};
+export {CHANGE_STATUS, changeStatus};

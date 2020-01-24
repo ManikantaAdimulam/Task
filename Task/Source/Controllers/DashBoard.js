@@ -1,31 +1,32 @@
 import React, {PureComponent} from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  Dimensions,
-  StyleSheet,
-  FlatList,
-} from 'react-native';
+import {View, Text, SafeAreaView, FlatList} from 'react-native';
 import {connect} from 'react-redux';
 import {IconWithBadge} from '../Components/IconWithBadge';
 import LinearGradient from 'react-native-linear-gradient';
 import {HeaderView} from '../Components/HeadeView';
 import {CardView} from '../Components/CardView';
 import {Cell} from '../Components/Cell';
-
+import {styles} from './Styles';
+import {changeStatus} from '../Redux/Actions/Actions';
 class DashBoard extends PureComponent {
   constructor(props) {
     super(props);
     this.renderCell = this.renderCell.bind(this);
+    this.changeNumberStatus = this.changeNumberStatus.bind(this);
   }
 
   renderCell({item}) {
     return <Cell item={item} />;
   }
 
+  changeNumberStatus = status => {
+    const {dispatch} = this.props;
+    this.setState({isStatusActive: status}, () => {
+      dispatch(changeStatus(status));
+    });
+  };
+
   render() {
-    console.log(this.props);
     const callIcon = require('../Assets/call.png');
     const messageIcon = require('../Assets/mail.png');
     const {name, data, number, message} = this.props;
@@ -39,24 +40,24 @@ class DashBoard extends PureComponent {
               <IconWithBadge title={'Messages'} icon={messageIcon} />
             </View>
           </View>
-          <View
-            style={{
-              height: height * 0.5,
-              backgroundColor: '#ffffff',
-              alignItems: 'center',
-            }}>
-            <View style={{top: -height * 0.1}}>
-              <CardView number={number} message={message} />
+          <View style={styles.cardView}>
+            <View style={styles.cardStyle}>
+              <CardView
+                number={number}
+                message={message}
+                changeStatus={this.changeNumberStatus}
+              />
             </View>
-            <View style={{width}}>
+            <View style={styles.list}>
               <FlatList
                 data={data}
                 horizontal
                 pagingEnabled
                 renderItem={this.renderCell}
-                keyExtractor={(item, index) => index}
+                keyExtractor={(item, index) => index.toString()}
               />
             </View>
+            <Text style={styles.validDate}> Valid till 12th JAN 2020</Text>
           </View>
         </SafeAreaView>
       </LinearGradient>
@@ -71,22 +72,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(DashBoard);
-
-const {height, width} = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-
-  topView: {
-    height: height * 0.5,
-  },
-
-  iconsView: {
-    flexDirection: 'row',
-    width,
-    justifyContent: 'space-around',
-    marginTop: height * 0.1,
-  },
-});

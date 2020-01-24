@@ -6,15 +6,20 @@ const intitalState = {
   number: '917799734813',
 };
 export function cardReducer(state = intitalState, action) {
+  console.log(`payload${action.payload}`);
   if (action.type == CHANGE_STATUS) {
     if (action.payload) {
       return {
         ...state,
-        message: 'Calls and messages are being managed by NoTring',
+        message: 'Calls and messages are being managed by NoTring.',
         isActive: action.payload,
       };
     } else {
-      return {...state};
+      return {
+        ...state,
+        message: 'Calls and messages are being forwarded to 7032312889.',
+        isActive: action.payload,
+      };
     }
   } else {
     return state;

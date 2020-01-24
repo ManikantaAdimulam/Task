@@ -9,19 +9,8 @@ export const IconWithBadge = ({title, icon}) => {
           <Image style={styles.icon} source={icon} />
           <Badge
             status="success"
-            containerStyle={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              height: 25,
-              width: 25,
-            }}
-            badgeStyle={{
-              height: 25,
-              width: 25,
-              borderRadius: 12.5,
-              backgroundColor: 'red',
-            }}
+            containerStyle={styles.badgeContainer}
+            badgeStyle={styles.badge}
           />
         </View>
       </View>
@@ -38,11 +27,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     resizeMode: 'center',
   },
+  badgeContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    height: 25,
+    width: 25,
+  },
   badge: {
     height: 25,
     width: 25,
     borderRadius: 12.5,
-    backgroundColor: '#000000',
+    backgroundColor: 'red',
   },
   iconContainer: {
     flexDirection: 'row',

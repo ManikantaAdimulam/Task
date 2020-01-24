@@ -6,32 +6,25 @@ import {Switch} from 'react-native-switch';
 export const CardView = ({isNoTringNumber, message, number, changeStatus}) => {
   const alertIcon = require('../Assets/alert.png');
   const checkIcon = require('../Assets/right.png');
+  const [isActive, changeState] = useState(false);
+  const changeActiveStatus = value => {
+    changeState(value);
+    changeStatus(value);
+  };
   return (
     <Card containerStyle={styles.card}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          height: height * 0.08,
-        }}>
-        <View style={{flex: 1, marginLeft: 8}}>
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: 'bold',
-              color: isNoTringNumber ? 'green' : 'red',
-            }}>
+      <View style={styles.backgroundView}>
+        <View style={styles.messageView}>
+          <Text style={[styles.message, {color: isActive ? 'green' : 'red'}]}>
             NoTring Number
           </Text>
-          <Text style={{fontSize: 22, fontWeight: 'bold', marginTop: 10}}>
-            {number}
-          </Text>
+          <Text style={styles.number}>{number}</Text>
         </View>
-        <View style={{height: 25, width: 40, marginTop: 15, marginRight: 25}}>
+        <View style={styles.switchView}>
           <Switch
-            value={isNoTringNumber}
-            onValueChange={val => console.log(val)}
-            disabled={false}
+            value={isActive}
+            onValueChange={val => changeActiveStatus(val)}
+            // disabled={false}
             activeText={'On'}
             inActiveText={'Off'}
             circleSize={30}
@@ -43,9 +36,7 @@ export const CardView = ({isNoTringNumber, message, number, changeStatus}) => {
             circleActiveColor={'#ffffff'}
             circleInActiveColor={'#ffffff'}
             changeValueImmediately={true}
-            renderInsideCircle={() => (
-              <Text>{isNoTringNumber ? 'ON' : 'OFF'}</Text>
-            )} // custom component to render inside the Switch circle (Text, Image, etc.)
+            renderInsideCircle={() => <Text>{isActive ? 'ON' : 'OFF'}</Text>} // custom component to render inside the Switch circle (Text, Image, etc.)
             changeValueImmediately={true} // if rendering inside circle, change state immediately or wait for animation to complete
             innerCircleStyle={{alignItems: 'center', justifyContent: 'center'}} // style for inner animated circle for what you (may) be rendering inside the circle
             outerCircleStyle={{}} // style for outer animated circle
@@ -58,22 +49,15 @@ export const CardView = ({isNoTringNumber, message, number, changeStatus}) => {
           />
         </View>
       </View>
-      <View
-        style={{
-          height: height * 0.08,
-          alignItems: 'center',
-          flexDirection: 'row',
-        }}>
+      <View style={styles.statusView}>
         <Image
-          source={isNoTringNumber ? checkIcon : alertIcon}
-          style={{
-            height: 40,
-            width: 40,
-            marginRight: 15,
-            resizeMode: 'contain',
-          }}
+          source={isActive ? checkIcon : alertIcon}
+          style={styles.statusImage}
         />
-        <Text style={{fontSize: 18}}>{message}</Text>
+        <Text
+          style={[styles.statusMessage, {color: isActive ? 'green' : 'red'}]}>
+          {message}
+        </Text>
       </View>
     </Card>
   );
@@ -85,5 +69,29 @@ const styles = StyleSheet.create({
     width: width * 0.8,
     borderRadius: 20,
     height: height * 0.2,
+  },
+  backgroundView: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    height: height * 0.08,
+  },
+  messageView: {flex: 1, marginLeft: 8},
+  message: {
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  number: {fontSize: 22, fontWeight: 'bold', marginTop: 10},
+  switchView: {height: 25, width: 40, marginTop: 15, marginRight: 25},
+  statusMessage: {fontSize: 18},
+  statusView: {
+    height: height * 0.08,
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  statusImage: {
+    height: 40,
+    width: 40,
+    marginRight: 15,
+    resizeMode: 'contain',
   },
 });

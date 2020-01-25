@@ -28,5 +28,6 @@ export const styles = StyleSheet.create({
     color: 'green',
     fontSize: 15,
     fontWeight: '700',
+    top: -15,
   },
 });
